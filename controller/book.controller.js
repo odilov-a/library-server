@@ -40,6 +40,9 @@ exports.searchBooks = async (req, res) => {
     if (query.title) {
       searchParams.title = { $regex: new RegExp(query.title, "i") };
     }
+    if (query.publisher) {
+      searchParams.publisher = { $regex: new RegExp(query.publisher, "i") };
+    }
     if (query.year) {
       searchParams.year = query.year;
     }
@@ -117,6 +120,8 @@ exports.createBook = async (req, res) => {
       author: req.body.author,
       count: req.body.count,
       year: req.body.year,
+      image: req.body.image,
+      publisher: req.body.publisher,
     });
     return res.json({ data: newBook });
   } catch (err) {
@@ -140,6 +145,8 @@ exports.updateBook = async (req, res) => {
         author: req.body.author,
         count: req.body.count,
         year: req.body.year,
+        image: req.body.image,
+        publisher: req.body.publisher,
       },
       { new: true }
     );

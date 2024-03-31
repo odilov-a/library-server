@@ -5,6 +5,7 @@ const bookRoutes = require("./book.routes.js");
 const categoryRoutes = require("./category.routes.js");
 const authorRoutes = require("./author.routes.js");
 const studentRoutes = require("./student.routes.js");
+const publisherRoutes = require("./publisher.routes.js");
 const router = Router();
 
 router.use("/translations", translationRoutes);
@@ -13,5 +14,6 @@ router.use("/books", bookRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/authors", authorRoutes);
 router.use("/students", studentRoutes);
+router.use("/publishers", publisherRoutes);
 
 module.exports = router;

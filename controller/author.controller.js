@@ -73,6 +73,7 @@ exports.createAuthor = async (req, res) => {
     const newAuthor = await Author.create({
       name: req.body.name,
       description: req.body.description,
+      image: req.body.image,
     });
     return res.json({ data: newAuthor });
   } catch (err) {
@@ -92,6 +93,7 @@ exports.updateAuthor = async (req, res) => {
       {
         name: req.body.name,
         description: req.body.description,
+        image: req.body.image,
       },
       { new: true }
     );

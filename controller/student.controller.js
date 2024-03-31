@@ -79,6 +79,7 @@ exports.createStudent = async (req, res) => {
       description: req.body.description,
       login: req.body.login,
       password: hashedPassword,
+      image: req.body.image,
     });
     return res.json({ data: newStudent });
   } catch (err) {
@@ -101,6 +102,7 @@ exports.updateStudent = async (req, res) => {
         description: req.body.description,
         login: req.body.login,
         password: hashedPassword, 
+        image: req.body.image,
       },
       { new: true }
     );
