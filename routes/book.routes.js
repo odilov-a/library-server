@@ -5,10 +5,8 @@ const bookController = require("../controller/book.controller.js");
 const bookRoutes = Router();
 
 bookRoutes.get("/", bookController.getAllBook);
-bookRoutes.get("/:bookId", bookController.getBookById);
 bookRoutes.get("/search", bookController.searchBooks);
-bookRoutes.get("/:bookId/like", bookController.likeBook);
-bookRoutes.get("/:bookId/dislike", bookController.dislikeBook);
+bookRoutes.get("/:bookId", bookController.getBookById);
 bookRoutes.post("/", authMiddleware, uploadMiddleware, bookController.createBook);
 bookRoutes.put("/:bookId", authMiddleware, uploadMiddleware, bookController.updateBook);
 bookRoutes.delete("/:bookId", authMiddleware, uploadMiddleware, bookController.deleteBook);

@@ -5,15 +5,11 @@ const studentSchame = new mongoose.Schema(
       type: String,
       required: true,
     },
-    login: {
+    username: {
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-      required: true,
-    },
-    password: {
+    booked: {
       type: String,
       required: true,
     },

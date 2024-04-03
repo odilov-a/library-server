@@ -70,34 +70,6 @@ exports.searchBooks = async (req, res) => {
   }
 };
 
-exports.likeBook = async (req, res) => {
-  try {
-    const book = await Book.findById(req.params.id);
-    if (!book) {
-      return res.status(404).json({ error: "Book not found" });
-    }
-    book.like += 1;
-    await book.save();
-    return res.status(200).json({ data: book });
-  } catch (error) {
-    return res.status(500).json({ error: err.message });
-  }
-};
-
-exports.dislikeBook = async (req, res) => {
-  try {
-    const book = await Book.findById(req.params.id);
-    if (!book) {
-      return res.status(404).json({ error: "Book not found" });
-    }
-    book.dislike += 1;
-    await book.save();
-    return res.status(200).json({ data: book });
-  } catch (error) {
-    return res.status(500).json({ error: err.message });
-  }
-};
-
 exports.getBookById = async (req, res) => {
   try {
     const book = await Book.findById(req.params.bookId);

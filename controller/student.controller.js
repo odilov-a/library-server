@@ -73,13 +73,11 @@ exports.getStudentById = async (req, res) => {
 exports.createStudent = async (req, res) => {
   try {
     req.body.image = req.images;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10); 
     const newStudent = await Student.create({
       name: req.body.name,
-      description: req.body.description,
-      login: req.body.login,
-      password: hashedPassword,
+      username: req.body.username,
       image: req.body.image,
+      booked: req.body.booked,
     });
     return res.json({ data: newStudent });
   } catch (err) {
@@ -94,15 +92,13 @@ exports.updateStudent = async (req, res) => {
       return res.status(404).json({ message: "Student not found" });
     }
     req.body.image = req.images;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const updatedStudent = await Student.findByIdAndUpdate(
       req.params.studentId,
       {
         name: req.body.name,
-        description: req.body.description,
-        login: req.body.login,
-        password: hashedPassword, 
+        username: req.body.username,
         image: req.body.image,
+        booked: req.body.booked,
       },
       { new: true }
     );

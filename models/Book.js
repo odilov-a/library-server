@@ -25,14 +25,6 @@ const bookSchame = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    like: {
-      type: Number,
-      default: 0,
-    },
-    dislike: {
-      type: Number,
-      default: 0,
-    },
     description: {
       type: String,
       required: true,

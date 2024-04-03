@@ -30,7 +30,7 @@
 		"prod": "node ./dist/bundle.js"
 	},
 	"keywords": [],
-	"author": "Akbar Odilov", 
+	"author": "Akbar Odilov",
 	"license": "MIT",
 	"description": "library-api"
 }
