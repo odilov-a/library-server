@@ -1,41 +1,49 @@
 const mongoose = require("mongoose");
-const bookSchame = new mongoose.Schema(
-  {
-    author: {
-      type: String,
-      required: true,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    publisher: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    year: {
-      type: String,
-      required: true,
-    },
-    count: {
-      type: Number,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: Array,
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
 
-const Book = mongoose.model("book", bookSchame);
-module.exports = Book;
+class Book {
+  constructor() {
+    this.model = mongoose.model("book", this._defineSchema());
+  }
+
+  _defineSchema() {
+    return new mongoose.Schema(
+      {
+        author: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "author",
+        },
+        category: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "category",
+        },
+        publisher: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "publisher",
+        },
+        title: {
+          type: String,
+          required: true,
+        },
+        year: {
+          type: String,
+          required: true,
+        },
+        count: {
+          type: Number,
+          required: true,
+        },
+        description: {
+          type: String,
+          required: true,
+        },
+        image: {
+          type: Array,
+          required: true,
+        },
+      },
+      { timestamps: true }
+    );
+  }
+}
+
+module.exports = new Book().model;

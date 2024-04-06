@@ -4,6 +4,7 @@ node_modules/
 # Log files
 logs/
 *.log
+.env
 
 # Runtime data such as databases
 *.sqlite
@@ -34,3 +35,4 @@ yarn.lock
 /coverage
 
 # Any other files/directories you want to ignore...
+.env

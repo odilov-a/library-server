@@ -1,24 +1,29 @@
 const mongoose = require("mongoose");
-const studentSchame = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-    username: {
-      type: String,
-      required: true,
-    },
-    booked: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: Array,
-    },
-  },
-  { timestamps: true }
-);
 
-const Student = mongoose.model("student", studentSchame);
-module.exports = Student;
+class Student {
+  constructor() {
+    this.model = mongoose.model("student", this._defineSchema());
+  }
+
+  _defineSchema() {
+    return new mongoose.Schema(
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        username: {
+          type: String,
+          required: true,
+        },
+        booked: {
+          type: String,
+          required: true,
+        },
+      },
+      { timestamps: true }
+    );
+  }
+}
+
+module.exports = new Student().model;

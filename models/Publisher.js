@@ -1,13 +1,21 @@
 const mongoose = require("mongoose");
-const publisherSchame = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
 
-const Publisher = mongoose.model("publisher", publisherSchame);
-module.exports = Publisher;
+class Publisher {
+  constructor() {
+    this.model = mongoose.model("publisher", this._defineSchema());
+  }
+
+  _defineSchema() {
+    return new mongoose.Schema(
+      {
+        title: {
+          type: String,
+          required: true,
+        },
+      },
+      { timestamps: true }
+    );
+  }
+}
+
+module.exports = new Publisher().model;
