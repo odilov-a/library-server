@@ -4,23 +4,13 @@ const Student = require("../models/Student.js");
 class BookController {
   async getAllBook(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const perPage = parseInt(req.query.perPage) || 10;
-      const [totalBook, allBook] = await Promise.all([
-        Book.countDocuments(),
-        Book.find()
-          .skip((page - 1) * perPage)
-          .limit(perPage),
-      ]);
-      const totalPages = Math.ceil(totalBook / perPage);
+      const allBook = await Book.find();
       if (allBook.length === 0) {
         return res.status(404).json({ data: [] });
       }
       return res.json({
         data: allBook,
-        page,
-        totalPages,
-        totalItems: totalBook,
+        totalItems: allBook.length,
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -49,7 +39,10 @@ class BookController {
         searchParams.year = query.year;
       }
       if (query.startYear && query.endYear) {
-        searchParams.year = { $gte: parseInt(query.startYear), $lte: parseInt(query.endYear) };
+        searchParams.year = {
+          $gte: parseInt(query.startYear),
+          $lte: parseInt(query.endYear),
+        };
       }
       const [totalBooks, books] = await Promise.all([
         Book.countDocuments(searchParams),
@@ -59,7 +52,12 @@ class BookController {
       ]);
       const totalPages = Math.ceil(totalBooks / perPage);
       if (books.length === 0) {
-        return res.status(404).json({ data: [], message: "No books found matching the search criteria" });
+        return res
+          .status(404)
+          .json({
+            data: [],
+            message: "No books found matching the search criteria",
+          });
       }
       return res.json({
         data: books,

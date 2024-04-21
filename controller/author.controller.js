@@ -3,23 +3,13 @@ const Author = require("../models/Author.js");
 class AuthorController {
   async getAllAuthor(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const perPage = parseInt(req.query.perPage) || 10;
-      const [totalAuthor, allAuthor] = await Promise.all([
-        Author.countDocuments(),
-        Author.find()
-          .skip((page - 1) * perPage)
-          .limit(perPage),
-      ]);
-      const totalPages = Math.ceil(totalAuthor / perPage);
+      const allAuthor = await Author.find();
       if (allAuthor.length === 0) {
         return res.status(404).json({ data: [] });
       }
       return res.json({
         data: allAuthor,
-        page,
-        totalPages,
-        totalItems: totalAuthor,
+        totalItems: allAuthor.length,
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -43,12 +33,10 @@ class AuthorController {
       ]);
       const totalPages = Math.ceil(totalAuthors / perPage);
       if (authors.length === 0) {
-        return res
-          .status(404)
-          .json({
-            data: [],
-            message: "No authors found matching the search criteria",
-          });
+        return res.status(404).json({
+          data: [],
+          message: "No authors found matching the search criteria",
+        });
       }
       return res.json({
         data: authors,

@@ -3,23 +3,13 @@ const Category = require("../models/Category.js");
 class CategoryController {
   async getAllCategory(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const perPage = parseInt(req.query.perPage) || 10;
-      const [totalCategory, allCategory] = await Promise.all([
-        Category.countDocuments(),
-        Category.find()
-          .skip((page - 1) * perPage)
-          .limit(perPage),
-      ]);
-      const totalPages = Math.ceil(totalCategory / perPage);
+      const allCategory = await Category.find();
       if (allCategory.length === 0) {
         return res.status(404).json({ data: [] });
       }
       return res.json({
         data: allCategory,
-        page,
-        totalPages,
-        totalItems: totalCategory,
+        totalItems: allCategory.length,
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -43,7 +33,12 @@ class CategoryController {
       ]);
       const totalPages = Math.ceil(totalCategories / perPage);
       if (categories.length === 0) {
-        return res.status(404).json({ data: [], message: "No categories found matching the search criteria" });
+        return res
+          .status(404)
+          .json({
+            data: [],
+            message: "No categories found matching the search criteria",
+          });
       }
       return res.json({
         data: categories,
@@ -100,7 +95,9 @@ class CategoryController {
 
   async deleteCategory(req, res) {
     try {
-      const deletedCategory = await Category.findByIdAndDelete(req.params.categoryId);
+      const deletedCategory = await Category.findByIdAndDelete(
+        req.params.categoryId
+      );
       if (!deletedCategory) {
         return res.status(404).json({ message: "Category not found" });
       }

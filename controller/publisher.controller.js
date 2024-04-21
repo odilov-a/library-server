@@ -3,23 +3,13 @@ const Publisher = require("../models/Publisher.js");
 class PublisherController {
   async getAllPublisher(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const perPage = parseInt(req.query.perPage) || 10;
-      const [totalPublisher, allPublisher] = await Promise.all([
-        Publisher.countDocuments(),
-        Publisher.find()
-          .skip((page - 1) * perPage)
-          .limit(perPage),
-      ]);
-      const totalPages = Math.ceil(totalPublisher / perPage);
+      const allPublisher = await Publisher.find();
       if (allPublisher.length === 0) {
         return res.status(404).json({ data: [] });
       }
       return res.json({
         data: allPublisher,
-        page,
-        totalPages,
-        totalItems: totalPublisher,
+        totalItems: allPublisher.length,
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -43,7 +33,12 @@ class PublisherController {
       ]);
       const totalPages = Math.ceil(totalPublishers / perPage);
       if (publisher.length === 0) {
-        return res.status(404).json({ data: [], message: "No publisher found matching the search criteria" });
+        return res
+          .status(404)
+          .json({
+            data: [],
+            message: "No publisher found matching the search criteria",
+          });
       }
       return res.json({
         data: publisher,
@@ -88,7 +83,7 @@ class PublisherController {
       const updatedPublisher = await Publisher.findByIdAndUpdate(
         req.params.publisherId,
         {
-          title: req.body.title
+          title: req.body.title,
         },
         { new: true }
       );
@@ -100,7 +95,9 @@ class PublisherController {
 
   async deletePublisher(req, res) {
     try {
-      const deletedPublisher = await Publisher.findByIdAndDelete(req.params.publisherId);
+      const deletedPublisher = await Publisher.findByIdAndDelete(
+        req.params.publisherId
+      );
       if (!deletedPublisher) {
         return res.status(404).json({ message: "Publisher not found" });
       }

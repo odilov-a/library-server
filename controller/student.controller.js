@@ -4,23 +4,13 @@ const Book = require("../models/Book.js");
 class StudentController {
   async getAllStudent(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const perPage = parseInt(req.query.perPage) || 10;
-      const [totalStudent, allStudent] = await Promise.all([
-        Student.countDocuments(),
-        Student.find()
-          .skip((page - 1) * perPage)
-          .limit(perPage),
-      ]);
-      const totalPages = Math.ceil(totalStudent / perPage);
+      const allStudent = await Student.find();
       if (allStudent.length === 0) {
         return res.status(404).json({ data: [] });
       }
       return res.json({
         data: allStudent,
-        page,
-        totalPages,
-        totalItems: totalStudent,
+        totalItems: allStudent.length,
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -47,7 +37,10 @@ class StudentController {
       ]);
       const totalPages = Math.ceil(totalStudents / perPage);
       if (students.length === 0) {
-        return res.status(404).json({ data: [], message: "No students found matching the search criteria" });
+        return res.status(404).json({
+          data: [],
+          message: "No students found matching the search criteria",
+        });
       }
       return res.json({
         data: students,
@@ -74,9 +67,16 @@ class StudentController {
 
   async createStudent(req, res) {
     try {
+      const existingStudent = await Student.findOne({
+        username: req.body.username,
+      });
+      if (existingStudent) {
+        return res.status(400).json({ error: "Username already exists" });
+      }
       const newStudent = await Student.create({
         name: req.body.name,
         username: req.body.username,
+        description: req.body.description,
         booked: req.body.booked,
       });
       return res.json({ data: newStudent });
@@ -96,6 +96,7 @@ class StudentController {
         {
           name: req.body.name,
           username: req.body.username,
+          description: req.body.description,
           booked: req.body.booked,
         },
         { new: true }
@@ -129,7 +130,9 @@ class StudentController {
         return res.status(404).json({ message: "Student or book not found" });
       }
       if (student.booked.includes(bookId)) {
-        return res.status(400).json({ message: "Book already booked by the student" });
+        return res
+          .status(400)
+          .json({ message: "Book already booked by the student" });
       }
       if (book.count <= 0) {
         return res.status(400).json({ message: "Book is out of stock" });
