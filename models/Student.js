@@ -17,8 +17,8 @@ class Student {
           required: true,
         },
         booked: {
-          type: String,
-          required: true,
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "book",
         },
       },
       { timestamps: true }
