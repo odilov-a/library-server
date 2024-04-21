@@ -32,8 +32,8 @@ class AuthorController {
       const page = parseInt(query.page) || 1;
       const perPage = parseInt(query.perPage) || 10;
       let searchParams = {};
-      if (query.name) {
-        searchParams.name = { $regex: new RegExp(query.name, "i") };
+      if (query.title) {
+        searchParams.title = { $regex: new RegExp(query.title, "i") };
       }
       const [totalAuthors, authors] = await Promise.all([
         Author.countDocuments(searchParams),
@@ -43,7 +43,12 @@ class AuthorController {
       ]);
       const totalPages = Math.ceil(totalAuthors / perPage);
       if (authors.length === 0) {
-        return res.status(404).json({ data: [], message: "No authors found matching the search criteria" });
+        return res
+          .status(404)
+          .json({
+            data: [],
+            message: "No authors found matching the search criteria",
+          });
       }
       return res.json({
         data: authors,
