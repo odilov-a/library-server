@@ -78,6 +78,8 @@ class StudentController {
         username: req.body.username,
         description: req.body.description,
         booked: req.body.booked,
+        take: req.body.take,
+        give: req.body.give,
       });
       return res.json({ data: newStudent });
     } catch (err) {
@@ -98,6 +100,8 @@ class StudentController {
           username: req.body.username,
           description: req.body.description,
           booked: req.body.booked,
+          take: req.body.take,
+          give: req.body.give,
         },
         { new: true }
       );

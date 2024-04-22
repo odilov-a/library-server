@@ -17,8 +17,12 @@ class Student {
           unique: true,
           required: true,
         },
-        description: {
-          type: String,
+        take: {
+          type: Date,
+          required: true,
+        },
+        give: {
+          type: Date,
           required: true,
         },
         booked: {
