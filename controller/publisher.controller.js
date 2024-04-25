@@ -16,41 +16,6 @@ class PublisherController {
     }
   }
 
-  async searchPublishers(req, res) {
-    try {
-      const query = req.query;
-      const page = parseInt(query.page) || 1;
-      const perPage = parseInt(query.perPage) || 10;
-      let searchParams = {};
-      if (query.name) {
-        searchParams.name = { $regex: new RegExp(query.name, "i") };
-      }
-      const [totalPublishers, publisher] = await Promise.all([
-        Publisher.countDocuments(searchParams),
-        Publisher.find(searchParams)
-          .skip((page - 1) * perPage)
-          .limit(perPage),
-      ]);
-      const totalPages = Math.ceil(totalPublishers / perPage);
-      if (publisher.length === 0) {
-        return res
-          .status(404)
-          .json({
-            data: [],
-            message: "No publisher found matching the search criteria",
-          });
-      }
-      return res.json({
-        data: publisher,
-        page,
-        totalPages,
-        totalItems: totalPublishers,
-      });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
-
   async getPublisherById(req, res) {
     try {
       const publisher = await Publisher.findById(req.params.publisherId);

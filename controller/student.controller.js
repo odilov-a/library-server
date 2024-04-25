@@ -124,45 +124,6 @@ class StudentController {
       return res.status(500).json({ error: err.message });
     }
   }
-
-  async bookBookForStudent(req, res) {
-    try {
-      const { studentId, bookId } = req.params;
-      const student = await Student.findById(studentId);
-      const book = await Book.findById(bookId);
-      if (!student || !book) {
-        return res.status(404).json({ message: "Student or book not found" });
-      }
-      if (student.booked.includes(bookId)) {
-        return res
-          .status(400)
-          .json({ message: "Book already booked by the student" });
-      }
-      if (book.count <= 0) {
-        return res.status(400).json({ message: "Book is out of stock" });
-      }
-      student.booked.push(bookId);
-      await student.save();
-      book.count--;
-      await book.save();
-      return res.json({ message: "Booked successfully" });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
-
-  async getBooksForStudent(req, res) {
-    try {
-      const { studentId } = req.params;
-      const student = await Student.findById(studentId).populate("booked");
-      if (!student) {
-        return res.status(404).json({ message: "Student not found" });
-      }
-      return res.json({ data: student.booked });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
 }
 
 module.exports = new StudentController();

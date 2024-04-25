@@ -16,41 +16,6 @@ class CategoryController {
     }
   }
 
-  async searchCategories(req, res) {
-    try {
-      const query = req.query;
-      const page = parseInt(query.page) || 1;
-      const perPage = parseInt(query.perPage) || 10;
-      let searchParams = {};
-      if (query.title) {
-        searchParams.title = { $regex: new RegExp(query.title, "i") };
-      }
-      const [totalCategories, categories] = await Promise.all([
-        Category.countDocuments(searchParams),
-        Category.find(searchParams)
-          .skip((page - 1) * perPage)
-          .limit(perPage),
-      ]);
-      const totalPages = Math.ceil(totalCategories / perPage);
-      if (categories.length === 0) {
-        return res
-          .status(404)
-          .json({
-            data: [],
-            message: "No categories found matching the search criteria",
-          });
-      }
-      return res.json({
-        data: categories,
-        page,
-        totalPages,
-        totalItems: totalCategories,
-      });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
-
   async getCategoryById(req, res) {
     try {
       const category = await Category.findById(req.params.categoryId);

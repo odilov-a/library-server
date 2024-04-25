@@ -28,10 +28,6 @@ class Book {
           type: String,
           required: true,
         },
-        count: {
-          type: Number,
-          required: true,
-        },
         description: {
           type: String,
           required: true,

@@ -16,39 +16,6 @@ class AuthorController {
     }
   }
 
-  async searchAuthors(req, res) {
-    try {
-      const query = req.query;
-      const page = parseInt(query.page) || 1;
-      const perPage = parseInt(query.perPage) || 10;
-      let searchParams = {};
-      if (query.title) {
-        searchParams.title = { $regex: new RegExp(query.title, "i") };
-      }
-      const [totalAuthors, authors] = await Promise.all([
-        Author.countDocuments(searchParams),
-        Author.find(searchParams)
-          .skip((page - 1) * perPage)
-          .limit(perPage),
-      ]);
-      const totalPages = Math.ceil(totalAuthors / perPage);
-      if (authors.length === 0) {
-        return res.status(404).json({
-          data: [],
-          message: "No authors found matching the search criteria",
-        });
-      }
-      return res.json({
-        data: authors,
-        page,
-        totalPages,
-        totalItems: totalAuthors,
-      });
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
-
   async getAuthorById(req, res) {
     try {
       const author = await Author.findById(req.params.authorId);
