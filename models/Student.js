@@ -17,17 +17,9 @@ class Student {
           unique: true,
           required: true,
         },
-        take: {
-          type: Date,
+        image: {
+          type: Array,
           required: true,
-        },
-        give: {
-          type: Date,
-          required: true,
-        },
-        booked: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "book",
         },
       },
       { timestamps: true }

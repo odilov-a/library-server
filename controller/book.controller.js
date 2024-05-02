@@ -1,5 +1,4 @@
 const Book = require("../models/Book.js");
-const Student = require("../models/Student.js");
 
 class BookController {
   async getAllBook(req, res) {
@@ -24,16 +23,16 @@ class BookController {
       const perPage = parseInt(query.perPage) || 10;
       let searchParams = {};
       if (query.author) {
-        searchParams.author = { $regex: new RegExp(query.author, "i") };
+        searchParams.author = query.author; // Assuming author is an exact match
       }
       if (query.category) {
-        searchParams.category = { $regex: new RegExp(query.category, "i") };
+        searchParams.category = query.category; // Assuming category is an exact match
       }
       if (query.title) {
         searchParams.title = { $regex: new RegExp(query.title, "i") };
       }
       if (query.publisher) {
-        searchParams.publisher = { $regex: new RegExp(query.publisher, "i") };
+        searchParams.publisher = query.publisher; // Assuming publisher is an exact match
       }
       if (query.year) {
         searchParams.year = query.year;
@@ -48,7 +47,8 @@ class BookController {
         Book.countDocuments(searchParams),
         Book.find(searchParams)
           .skip((page - 1) * perPage)
-          .limit(perPage),
+          .limit(perPage)
+          .populate(["author", "category", "publisher"])
       ]);
       const totalPages = Math.ceil(totalBooks / perPage);
       if (books.length === 0) {
@@ -69,6 +69,7 @@ class BookController {
       return res.status(500).json({ error: err.message });
     }
   }
+  
 
   async getBookById(req, res) {
     try {
@@ -87,7 +88,6 @@ class BookController {
       req.body.image = req.images;
       const newBook = await Book.create({
         title: req.body.title,
-        description: req.body.description,
         category: req.body.category,
         author: req.body.author,
         year: req.body.year,
@@ -111,7 +111,6 @@ class BookController {
         req.params.bookId,
         {
           title: req.body.title,
-          description: req.body.description,
           category: req.body.category,
           author: req.body.author,
           year: req.body.year,

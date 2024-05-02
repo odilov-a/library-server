@@ -25,11 +25,7 @@ class Book {
           required: true,
         },
         year: {
-          type: String,
-          required: true,
-        },
-        description: {
-          type: String,
+          type: Number,
           required: true,
         },
         image: {

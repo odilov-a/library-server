@@ -1,10 +1,9 @@
 const Student = require("../models/Student.js");
-const Book = require("../models/Book.js");
 
 class StudentController {
   async getAllStudent(req, res) {
     try {
-      const allStudent = await Student.find();
+      const allStudent = await Student.find().populate("booked");
       if (allStudent.length === 0) {
         return res.status(404).json({ data: [] });
       }
@@ -33,7 +32,8 @@ class StudentController {
         Student.countDocuments(searchParams),
         Student.find(searchParams)
           .skip((page - 1) * perPage)
-          .limit(perPage),
+          .limit(perPage)
+          .populate("booked"),
       ]);
       const totalPages = Math.ceil(totalStudents / perPage);
       if (students.length === 0) {
@@ -73,13 +73,10 @@ class StudentController {
       if (existingStudent) {
         return res.status(400).json({ error: "Username already exists" });
       }
+      req.body.image = req.images;
       const newStudent = await Student.create({
         name: req.body.name,
         username: req.body.username,
-        description: req.body.description,
-        booked: req.body.booked,
-        take: req.body.take,
-        give: req.body.give,
       });
       return res.json({ data: newStudent });
     } catch (err) {
@@ -93,15 +90,12 @@ class StudentController {
       if (!oldStudent) {
         return res.status(404).json({ message: "Student not found" });
       }
+      req.body.image = req.images;
       const updatedStudent = await Student.findByIdAndUpdate(
         req.params.studentId,
         {
           name: req.body.name,
           username: req.body.username,
-          description: req.body.description,
-          booked: req.body.booked,
-          take: req.body.take,
-          give: req.body.give,
         },
         { new: true }
       );
