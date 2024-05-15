@@ -18,7 +18,7 @@ class Student {
           required: true,
         },
         image: {
-          type: Array,
+          type: String,
           required: true,
         },
       },
