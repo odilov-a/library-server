@@ -3,7 +3,7 @@ const Order = require("../models/Order.js");
 class OrderController {
   async getAllOrder(req, res) {
     try {
-      const allOrder = await Order.find();
+      const allOrder = await Order.find().populate(["student", "book"]);
       if (allOrder.length === 0) {
         return res.status(404).json({ data: [] });
       }
@@ -14,7 +14,7 @@ class OrderController {
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
-  }
+  }  
 
   async getOrderById(req, res) {
     try {

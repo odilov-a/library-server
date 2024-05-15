@@ -3,7 +3,7 @@ const Student = require("../models/Student.js");
 class StudentController {
   async getAllStudent(req, res) {
     try {
-      const allStudent = await Student.find().populate("booked");
+      const allStudent = await Student.find()
       if (allStudent.length === 0) {
         return res.status(404).json({ data: [] });
       }
@@ -33,7 +33,6 @@ class StudentController {
         Student.find(searchParams)
           .skip((page - 1) * perPage)
           .limit(perPage)
-          .populate("booked"),
       ]);
       const totalPages = Math.ceil(totalStudents / perPage);
       if (students.length === 0) {
@@ -77,6 +76,7 @@ class StudentController {
       const newStudent = await Student.create({
         name: req.body.name,
         username: req.body.username,
+        image: req.body.image,
       });
       return res.json({ data: newStudent });
     } catch (err) {
@@ -96,6 +96,7 @@ class StudentController {
         {
           name: req.body.name,
           username: req.body.username,
+          image: req.body.image,
         },
         { new: true }
       );
