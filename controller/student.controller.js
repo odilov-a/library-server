@@ -76,7 +76,7 @@ class StudentController {
       const newStudent = await Student.create({
         name: req.body.name,
         username: req.body.username,
-        image: req.body.image,
+        image: req.body.image, // Assuming you handle image uploads correctly
       });
       return res.json({ data: newStudent });
     } catch (err) {
@@ -86,20 +86,19 @@ class StudentController {
 
   async updateStudent(req, res) {
     try {
-      const oldStudent = await Student.findById(req.params.studentId);
-      if (!oldStudent) {
-        return res.status(404).json({ message: "Student not found" });
-      }
       req.body.image = req.images;
       const updatedStudent = await Student.findByIdAndUpdate(
         req.params.studentId,
         {
           name: req.body.name,
           username: req.body.username,
-          image: req.body.image,
+          image: req.body.image, // Assuming you handle image updates correctly
         },
         { new: true }
       );
+      if (!updatedStudent) {
+        return res.status(404).json({ message: "Student not found" });
+      }
       return res.json({ data: updatedStudent });
     } catch (err) {
       return res.status(500).json({ error: err.message });
