@@ -6,6 +6,8 @@ const authorRoutes = require("./author.routes.js");
 const studentRoutes = require("./student.routes.js");
 const publisherRoutes = require("./publisher.routes.js");
 const orderRoutes = require("./order.routes.js");
+const superUserRoutes = require("./super.user.routes.js");
+const logRoutes = require("./log.routes.js");
 const router = Router();
 
 router.use("/users", userRoutes);
@@ -15,5 +17,7 @@ router.use("/authors", authorRoutes);
 router.use("/students", studentRoutes);
 router.use("/publishers", publisherRoutes);
 router.use("/orders", orderRoutes);
+router.use("/supers", superUserRoutes);
+router.use("/logs", logRoutes);
 
 module.exports = router;

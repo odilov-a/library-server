@@ -1,24 +1,20 @@
 const mongoose = require("mongoose");
 
-class Student {
+class SuperUser {
   constructor() {
-    this.model = mongoose.model("student", this._defineSchema());
+    this.model = mongoose.model("superUser", this._defineSchema());
   }
 
   _defineSchema() {
     return new mongoose.Schema(
       {
-        name: {
-          type: String,
-          required: true,
-        },
-        username: {
+        login: {
           type: String,
           unique: true,
           required: true,
         },
-        image: {
-          type: Array,
+        password: {
+          type: String,
           required: true,
         },
       },
@@ -27,4 +23,4 @@ class Student {
   }
 }
 
-module.exports = new Student().model;
+module.exports = new SuperUser().model;

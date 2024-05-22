@@ -3,7 +3,7 @@ const Book = require("../models/Book.js");
 class BookController {
   async getAllBook(req, res) {
     try {
-      const allBook = await Book.find().populate(["author", "category", "publisher"]);
+      const allBook = await Book.find({}).populate(["author", "category", "publisher"]);
       if (allBook.length === 0) {
         return res.status(404).json({ data: [] });
       }
@@ -23,16 +23,16 @@ class BookController {
       const perPage = parseInt(query.perPage) || 10;
       let searchParams = {};
       if (query.author) {
-        searchParams.author = query.author; // Assuming author is an exact match
+        searchParams.author = query.author;
       }
       if (query.category) {
-        searchParams.category = query.category; // Assuming category is an exact match
+        searchParams.category = query.category;
       }
       if (query.title) {
         searchParams.title = { $regex: new RegExp(query.title, "i") };
       }
       if (query.publisher) {
-        searchParams.publisher = query.publisher; // Assuming publisher is an exact match
+        searchParams.publisher = query.publisher;
       }
       if (query.year) {
         searchParams.year = query.year;

@@ -18,7 +18,8 @@
 		"sharp": "^0.33.2",
 		"uuid": "^9.0.1",
 		"webpack-cli": "^5.1.4",
-		"webpack-node-externals": "^3.0.0"
+		"webpack-node-externals": "^3.0.0",
+		"ws": "^8.17.0"
 	},
 	"name": "library-api",
 	"version": "1.0.0",

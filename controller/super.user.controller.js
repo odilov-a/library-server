@@ -1,9 +1,9 @@
-const Users = require("../models/User.js");
+const Users = require("../models/Super.js");
 const { sign } = require("../utils/jwt.js");
 const bcrypt = require("bcrypt");
 
-class UserController {
-  async getMe(req, res) {
+class SuperUserController {
+  async SuperGetMe(req, res) {
     try {
       const { userId } = req.headers;
       const user = await Users.findById(userId);
@@ -24,25 +24,7 @@ class UserController {
     }
   }
 
-  async getUserById(req, res) {
-    try {
-      const { userId } = req.params;
-      const user = await Users.findById(userId);
-      if (!user) {
-        return res.status(404).json({
-          message: "User not found",
-        });
-      }
-      return res.json({
-        data: user,
-      });
-    } catch (err) {
-      console.error("Error fetching user:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-  }
-
-  async register(req, res) {
+  async SuperRegister(req, res) {
     try {
       const { login, password } = req.body;
       const existingUser = await Users.findOne({ login });
@@ -68,7 +50,7 @@ class UserController {
     }
   }
 
-  async login(req, res) {
+  async SuperLogin(req, res) {
     try {
       const { login, password } = req.body;
       const user = await Users.findOne({ login });
@@ -94,9 +76,9 @@ class UserController {
     }
   }
 
-  async update(req, res) {
+  async SuperUpdate(req, res) {
     try {
-      const { userId } = req.params;
+      const { userId } = req.headers;
       const { login, password } = req.body;
       const user = await Users.findById(userId);
       if (!user) {
@@ -117,36 +99,6 @@ class UserController {
       return res.status(500).json({ error: "Internal Server Error" });
     }
   }
-
-  async getAllUsers(req, res) {
-    try {
-      const users = await Users.find({}, '_id login createdAt');
-      return res.json({
-        data: users,
-      });
-    } catch (err) {
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-  }
-
-  async deleteUsers(req, res) {
-    try {
-      const { userId } = req.params;
-      const user = await Users.findById(userId);
-      if (!user) {
-        return res.status(404).json({
-          message: "User not found",
-        });
-      }
-      await Users.deleteOne({ _id: userId }); // Use deleteOne method on the model
-      return res.json({
-        message: "User deleted",
-      });
-    } catch (err) {
-      console.error("Error deleting user:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-  }  
 }
 
-module.exports = new UserController();
+module.exports = new SuperUserController();

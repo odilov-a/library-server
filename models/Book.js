@@ -29,7 +29,7 @@ class Book {
           required: true,
         },
         image: {
-          type: String,
+          type: Array,
           required: true,
         },
       },
