@@ -35,6 +35,7 @@ class OrderController {
         book: req.body.book,
         take: req.body.take,
         give: req.body.give,
+        type: req.body.type
       });
       return res.json({ data: newOrder });
     } catch (err) {
@@ -55,6 +56,7 @@ class OrderController {
           book: req.body.book,
           take: req.body.take,
           give: req.body.give,
+          type: req.body.type,
         },
         { new: true }
       );

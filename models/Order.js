@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const TYPE = ["new", "good", "satisfactory", "unsatisfied", "useless"]
 
 class Order {
   constructor() {
@@ -24,6 +25,10 @@ class Order {
           type: Date,
           required: true,
         },
+        type: {
+          type: String,
+          enum: TYPE,
+        }
       },
       { timestamps: true }
     );
